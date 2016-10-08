@@ -1,0 +1,48 @@
+Threads(Hilos de Proceso)
+
+Es una tarea que puede correr en paralelo, sin embargo las corre en simultaneo, pero debido a que el procesador realiza una 
+instruccion a la vez, por la velocidad parace que es en paralelo.
+Esto me permite por ejemplo abrir un archivo en un hilo mientras trabajo en la interfaz
+
+1-En java debo crear un nuevo Thread que herede de la clase
+2-Luego debo darle el start() para que arranque y luego start va a llamar al metodo run(), que es donde debe estar mi codigo
+3-Luego de aqui puedo pasar que el thread termine, cuando termine el metodo run o lo pare porque lo puse a domir(sleep), 
+o porque le puse un semaforo o señal.
+El sincronized sive para sincronizar y evitar bloqueos, pero no usarlo siempre, solo cuando es necesario.
+
+
+
+Socket (Java.net)
+
+Sirve para realizar una conexion punto a punto
+
+Esto es un esquema para un solo cliente
+
+Servidor
+1-Preparar el servidor
+El objeto que va a gestionar los Socket del lado del servidor es ServerSocket
+y lo unico que nesesita saber es el puerto por el cual va a atender
+2-Escuchar peticiones de conexion accept() 
+(metodo del Server Socket, metodo bloqueante, no avanza hasta que recive una peticion)
+
+
+Cliente
+1-Conectarse
+Socket y nesesita informacion para encontrar al servidor, por ende necesita la IP del servidor y el puerto por el cual
+esta escuchando el servidor. Esto devuelve un nuevo objeto socket vinculado
+2- Una vez que acepta el servidor la peticion, comienza la mensajeria.
+
+
+
+Normalmente el servidor esta en modo lectura para recibir ordenes o pedidos, y luego pasa a escritura para
+dar una respuesta, y finalmente vuelve a lectura
+
+Del lado del cliente la escritura y la lectura deben ser independiente y por eso debemos ponerlos en hilos de ejecucion
+
+Debido a que si viene otro cliente, no podemos esperar a terminar de atender uno para atender el proximo,
+la parte de mensajeria debe hacerse en un hilo de ejecucion.
+Ademas la escucha tambien va estar en otro hilo de ejecucion para escuchar todo el tiempo a nuevos clientes
+
+
+Tarea Cliente Servido con multiple salas de chat
+Usar Propierties
