@@ -17,7 +17,8 @@ public class ThreadEscuchar extends Thread{
 	
 	@Override
 	public void run(){
-		while(true){
+		boolean conetado = true;
+		while(conetado){
 			
 			try {
 				DataInputStream lectura = new DataInputStream(
@@ -25,7 +26,18 @@ public class ThreadEscuchar extends Thread{
 				new ThreadEnviar(clientes, lectura.readUTF()).start();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
+				clientes.remove(cliente);
+				try {
+					cliente.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				conetado = false;
+				
+				System.out.println("Servidor:Cliente Desconectado!");
 			}
 			
 		}

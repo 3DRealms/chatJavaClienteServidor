@@ -28,6 +28,7 @@ public class ThreadServidor extends Thread{
 				DataOutputStream salida = new DataOutputStream(
 						cliente.getOutputStream());
 				salida.writeUTF("Conectado!");
+				System.out.println("Servidor:Cliente Conectado!");
 				clientes.add(cliente);
 				new ThreadEscuchar(clientes,cliente).start();
 				cliente = null;

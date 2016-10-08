@@ -27,10 +27,18 @@ public class ThreadEnviar extends Thread{
 				try {
 					salida = new DataOutputStream(
 							cliente.getOutputStream());
-					salida.writeUTF(mensaje);
+					salida.writeUTF("Servidor: "+mensaje);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					
+					clientes.remove(cliente);
+					try {
+						cliente.close();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						//e1.printStackTrace();
+					}
 				}
 				
 			

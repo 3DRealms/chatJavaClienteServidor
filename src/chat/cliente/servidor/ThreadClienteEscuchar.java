@@ -15,7 +15,9 @@ private Socket cliente;
 	
 	@Override
 	public void run(){
-		while(true){
+		boolean conectado = true;
+		
+		while(conectado){
 			
 			try {
 				DataInputStream lectura = new DataInputStream(
@@ -23,7 +25,8 @@ private Socket cliente;
 				System.out.println(lectura.readUTF());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
+				conectado = false;
 			}
 			
 		}

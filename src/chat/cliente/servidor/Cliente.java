@@ -30,17 +30,13 @@ public class Cliente {
 		new ThreadClienteEscuchar(cliente).start();
 	}
 	
-	public void enviar(String mensaje){
+	public void enviar(String mensaje) throws IOException{
 		
-		
-		try {
+
 			DataOutputStream salida = new DataOutputStream(
 					cliente.getOutputStream());
 			salida.writeUTF(mensaje);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 
 	}
 	
@@ -58,16 +54,19 @@ public class Cliente {
 		cliente.escuchar();
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String sTexto;
+		boolean conectado = true;
 		try {
 		do {
 			  
 				sTexto = br.readLine();
 				System.out.println(sTexto);
 				cliente.enviar(sTexto);
-		} while(! sTexto.equals("FIN"));
+		} while(! sTexto.equals("FIN") && conectado);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
+				conectado = false;
+				System.out.println("Servidor Desconectado.");
 			}
 			  
 			
