@@ -1,19 +1,23 @@
 package chat.cliente.servidor;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ThreadServidor extends Thread{
 	
-	private List<Socket> clientes = new ArrayList<Socket>();
+	private Map <String, List<SocketChat>> canales = new HashMap<String, List<SocketChat>>();
 	private int puerto;
 	
 	ThreadServidor(int puerto){
 		this.puerto = puerto;
+		
+		canales.put("CANAL 1", new ArrayList<SocketChat>());
+		canales.put("CANAL 2", new ArrayList<SocketChat>());
+		canales.put("CANAL 3", new ArrayList<SocketChat>());
 	}
 	
 	@Override
@@ -21,16 +25,13 @@ public class ThreadServidor extends Thread{
 		
 		try{
 			ServerSocket server = new ServerSocket(puerto);
-			Socket cliente;
+			SocketChat cliente;
 			while(true){
-				cliente = server.accept();
-				// para los objetos usamos ObjetOutputStream y tenemos que implementar la interfaz serializable
-				DataOutputStream salida = new DataOutputStream(
-						cliente.getOutputStream());
-				salida.writeUTF("Conectado!");
+				cliente = new SocketChat(server.accept());
+				//cliente.enviarMensajeServidor("Conectado!");
 				System.out.println("Servidor:Cliente Conectado!");
-				clientes.add(cliente);
-				new ThreadEscuchar(clientes,cliente).start();
+				//clientes.add(cliente);
+				new ThreadEscuchar(canales,cliente).start();
 				cliente = null;
 			}
 			
@@ -39,9 +40,7 @@ public class ThreadServidor extends Thread{
 			catch(IOException e){
 				e.printStackTrace();
 			}
-		catch(Exception e){
-			e.printStackTrace();
-		}
+
 		
 	}
 	

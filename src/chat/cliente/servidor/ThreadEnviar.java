@@ -1,19 +1,19 @@
 package chat.cliente.servidor;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
 import java.util.List;
 
 public class ThreadEnviar extends Thread{
 	
-	private List<Socket> clientes;
+	private List<SocketChat> clientes;
 	String mensaje;
+	String remitente;
 
 	
-	public ThreadEnviar(List<Socket> clientes, String mensaje){
+	public ThreadEnviar(List<SocketChat> clientes, String mensaje, String remitente){
 		this.clientes = clientes;		
 		this.mensaje = mensaje;
+		this.remitente = remitente;
 	}
 	
 	@Override
@@ -21,20 +21,18 @@ public class ThreadEnviar extends Thread{
 
 			
 			
-			for(Socket cliente : clientes)
+			for(SocketChat cliente : clientes)
 			{
-				DataOutputStream salida;
+				
 				try {
-					salida = new DataOutputStream(
-							cliente.getOutputStream());
-					salida.writeUTF("Servidor: "+mensaje);
+					cliente.enviarMensaje(mensaje, remitente);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					
 					clientes.remove(cliente);
 					try {
-						cliente.close();
+						cliente.cerrar();
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						//e1.printStackTrace();

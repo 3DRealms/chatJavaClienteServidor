@@ -56,20 +56,17 @@ public class Cliente {
 		String sTexto;
 		boolean conectado = true;
 		try {
-		do {
-			  
-				sTexto = br.readLine();
-				System.out.println(sTexto);
+			sTexto = br.readLine();	
+			while(! sTexto.equals("FIN") && conectado) {		  
 				cliente.enviar(sTexto);
-		} while(! sTexto.equals("FIN") && conectado);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
-				conectado = false;
-				System.out.println("Servidor Desconectado.");
-			}
-			  
-			
+				sTexto = br.readLine();	
+			} 
+		} catch (IOException e) {
+			conectado = false;
+			System.out.println("Servidor Desconectado.");
+		}
+
+
 		cliente.cerrar();
 
 	}
