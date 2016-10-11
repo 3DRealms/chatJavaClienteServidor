@@ -3,17 +3,27 @@ package chat.cliente.servidor;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.Properties;
 
 public class Cliente {
 	
 	Socket cliente;
+	String serverIP;
+	Integer puerto;
 	
 	Cliente(){
 		try{
-		cliente = new Socket("localhost", 1000);
+		
+		
+
+		loadProperty("cliente.properties");
+		cliente = new Socket(serverIP, puerto);
 		DataInputStream lectura = new DataInputStream(
 				cliente.getInputStream());
 		System.out.println(lectura.readUTF());
@@ -47,6 +57,16 @@ public class Cliente {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void loadProperty(String dir) throws IOException{
+		Properties propiedades = new Properties();
+		InputStream entrada = null;	
+		entrada = new FileInputStream(dir);
+		propiedades.load(entrada);
+		serverIP = propiedades.getProperty("serverIP");
+		String puertoString = propiedades.getProperty("port");
+		puerto =  Integer.parseInt(puertoString);
 	}
 	
 	public static void main(String[] args) {
